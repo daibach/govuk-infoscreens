@@ -32,7 +32,12 @@ class Publisher_scraper extends CI_Controller {
 				$overview = imap_fetch_overview($inbox,$email,0);
 				$body = imap_body($inbox,$email);
 				
-				imap_mail_move($inbox,$email,'INBOX/done2');
+				try {
+          strtotime($email['overview'][0]->date);
+				  imap_mail_move($inbox,$email,'INBOX/done2');
+			  } catch (Exception $ex) {
+			    echo('Error');
+			  }
 	
 	      array_push($fetched_emails,array('body'=>$body,'overview'=>$overview));
 	      
@@ -69,7 +74,7 @@ class Publisher_scraper extends CI_Controller {
 							$subject_content[2][0],
 							$email['overview'][0]->subject,
 							json_encode($email),
-							$email['overview'][0]->udate
+							strtotime($email['overview'][0]->date)
 						);
       			
           } else {
@@ -81,7 +86,7 @@ class Publisher_scraper extends CI_Controller {
 							'',
 							$email['overview'][0]->subject,
 							json_encode($email),
-							$email['overview'][0]->udate
+							strtotime($email['overview'][0]->date)
 						);
 						
           }
@@ -99,7 +104,7 @@ class Publisher_scraper extends CI_Controller {
 								$subject_content[2][0],
 								$email['overview'][0]->subject,
 								json_encode($email),
-								$email['overview'][0]->udate
+								strtotime($email['overview'][0]->date)
 							);
 
             } else {
@@ -110,7 +115,7 @@ class Publisher_scraper extends CI_Controller {
 								'',
 								$email['overview'][0]->subject,
 								json_encode($email),
-								$email['overview'][0]->udate
+								strtotime($email['overview'][0]->date)
 							);
             }
             
@@ -122,7 +127,7 @@ class Publisher_scraper extends CI_Controller {
 						'',
 						$email['overview'][0]->subject,
 						json_encode($email),
-						$email['overview'][0]->udate
+						strtotime($email['overview'][0]->date)
 					);
         }
         
