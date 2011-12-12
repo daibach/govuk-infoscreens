@@ -21,11 +21,14 @@ class Publisher extends CI_Controller {
 	{
 		$this->load->model(array('message_model'));
 		
-		$today = $this->message_model->load_count_date(1323389390); //temp lock to last week for testing
-		$thisweek = $this->message_model->load_count_week(1323389390); //temp lock to last week for testing
+		$date = time();
+		
+		$today = $this->message_model->load_count_date($date); //temp lock to last week for testing
+		$thisweek = $this->message_model->load_count_week($date); //temp lock to last week for testing
 		
 		$data['today'] = $this->message_model->convert_count_result($today);
 		$data['thisweek'] = $this->message_model->convert_count_result($thisweek);
+		$data['thisdate'] = $date;
 		
 		$this->load->view('template/head');
 		$this->load->view('publisher/today',$data);

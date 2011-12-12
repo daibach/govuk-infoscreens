@@ -3,7 +3,7 @@
 <thead>
 	<tr>
 		<th>&nbsp;</th>
-		<th>Today</th>
+		<th>Today <span>(<?php echo date('D d, M'); ?>)</span></th>
 		<th>This Week</th>
 	</tr>
 </thead>
@@ -108,6 +108,7 @@
 
 <style>
 table th { font-size: 2em; color: #fff;	 }
+table th span { color: #666; font-weight: normal; }
 table td { color: #fff; font-size: 1.6em; border-top: 0; padding: 5px 15px 0 15px; line-height: 1.5em; }
 table td.today { background: #1a1a1a; width: 390px; }
 table td.format { padding-left: 0; }
