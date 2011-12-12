@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="robots" content="noindex, nofollow">
-    <meta http-equiv="refresh" content="900">
+    <meta http-equiv="refresh" content="300">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
