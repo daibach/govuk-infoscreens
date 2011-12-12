@@ -33,7 +33,7 @@ class Publisher_scraper extends CI_Controller {
 				$body = imap_body($inbox,$email);
 				
 				try {
-          strtotime($email['overview'][0]->date);
+          strtotime($overview[0]->date);
 				  imap_mail_move($inbox,$email,'INBOX/done2');
 			  } catch (Exception $ex) {
 			    echo('Error');
