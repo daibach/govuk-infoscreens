@@ -28,7 +28,7 @@
     .inbound, .outbound { background: #333; color: #fff; text-shadow: none; }
 		.inbound span, .outbound span { color: #fff; }
     .inbound { background: #333 url(/images/mail-icon.png) no-repeat 6px 6px; padding-left: 44px; }
-		span.inbound { background-position: -2px 0px; }
+		span.inbound { background-position: -6px -3px; }
     #stats { color: #000; }
     </style>
 

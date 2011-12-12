@@ -3,7 +3,7 @@
 <thead>
 	<tr>
 		<th>&nbsp;</th>
-		<th>Today <span>(<?php echo date('D d, M'); ?>)</span></th>
+		<th>Today <span>(<?php echo date('D d, M',$thisdate); ?>)</span></th>
 		<th>This Week</th>
 	</tr>
 </thead>
