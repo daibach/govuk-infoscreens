@@ -35,6 +35,27 @@ class Publisher extends CI_Controller {
 		$this->load->view('template/foot');
 		
 	}
+	
+	
+	public function yesterday()
+	{
+		$this->load->model(array('message_model'));
+		
+		$data['thisdate'] = time();
+		$data['yesterdaydate'] = strtotime('yesterday');
+		
+		
+		$today = $this->message_model->load_count_date($data['thisdate']); //temp lock to last week for testing
+		$yesterday = $this->message_model->load_count_date($data['yesterdaydate']); //temp lock to last week for testing
+		
+		$data['today'] = $this->message_model->convert_count_result($today);
+		$data['yesterday'] = $this->message_model->convert_count_result($yesterday);
+		
+		$this->load->view('template/head');
+		$this->load->view('publisher/yesterday',$data);
+		$this->load->view('template/foot');
+		
+	}
 
 
 	
