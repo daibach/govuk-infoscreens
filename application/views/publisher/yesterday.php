@@ -4,7 +4,7 @@
 	<tr>
 		<th>&nbsp;</th>
 		<th>Today <span>(<?php echo date('D d, M',$thisdate); ?>)</span></th>
-		<th>Yesterday <span>(<?php echo date('D d, M',$todaydate); ?>)</span></th>
+		<th>Yesterday <span>(<?php echo date('D d, M',$yesterdate); ?>)</span></th>
 	</tr>
 </thead>
 <tbody>
