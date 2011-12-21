@@ -57,7 +57,26 @@ class Publisher extends CI_Controller {
 		
 	}
 
-
+	
+	public function last_week()
+	{
+		$this->load->model(array('message_model'));
+		
+		$data['thisdate'] = time();
+		$data['lastdate'] = strtotime('last week');
+		
+		
+		$thisweek = $this->message_model->load_count_week($data['thisdate']); //temp lock to last week for testing
+		$lastweek = $this->message_model->load_count_week($data['lastdate']); //temp lock to last week for testing
+		
+		$data['thisweek'] = $this->message_model->convert_count_result($thisweek);
+		$data['lastweek'] = $this->message_model->convert_count_result($lastweek);
+		
+		$this->load->view('template/head');
+		$this->load->view('publisher/last_week',$data);
+		$this->load->view('template/foot');
+		
+	}
 	
 }
 
