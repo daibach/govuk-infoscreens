@@ -4,6 +4,8 @@ class Message_model extends CI_Model {
 	
 	public function store_message($action,$user,$format,$title,$subject,$content,$date) {
 			
+			if($format == 'Localtransaction') $format = 'Local transaction';
+			
 			$data = array(
 				'action'			=>$action,
 				'user'				=>$user,
@@ -18,12 +20,13 @@ class Message_model extends CI_Model {
 
 	}
 	
-	public function load_recent_messages($action_type,$limit=10) {
+	public function load_recent_messages($action_type,$limit=10,$action_id=0) {
 		
 		$this->db->where('action_type',$action_type);
 		$this->db->join('actions','actions.id=messages.action');
 		$this->db->order_by('action_date','desc');
 		if($limit > 0) { $this->db->limit($limit); }
+		if($action_id > 0) { $this->db->where('actions.id',$action_id); }
 		$query = $this->db->get('messages');
 		
 		if($query->num_rows() > 0) {

@@ -45,7 +45,7 @@ class Publisher_scraper extends CI_Controller {
     }
     
     imap_close($inbox,CL_EXPUNGE);
-    
+
     return $fetched_emails;
 
   }
@@ -56,79 +56,36 @@ class Publisher_scraper extends CI_Controller {
       
       foreach($all_emails as $email) {
         
-        $subject_regex = "/\[PUBLISHER\] (Published|New version|Review requested|Fact check requested|Fact check okayed|Amends needed|Work started|Okayed for publication|Assigned|Fact check okayed for publication|Okayed for publication): \"(.*?)\"\s*\((.*?)\)\s*by\s*(.*)/";
-        $fcresponse_subject_regex = "/\[PUBLISHER\] (Fact check response): \"(.*?)\"\s*\((.*?)\)/";
+        $subject_regex = "/\[PUBLISHER\] (Published|New version|Review requested|Fact check requested|Fact check okayed|Amends needed|Work started|Okayed for publication|Fact check okayed for publication): \"(.*?)\"\s*\((.*?)\)\s*by\s*(.*)/";
+        $assigned_regex = "/\[PUBLISHER\] (Assigned): \"(.*?)\"\s*\((.*?)\)\s*to\s*(.*)/";
+        $created_regex = "/\[PUBLISHER\] Created (.*?): \"(.*?)\"\s*\(by\s*(.*)\)/";
+        $fcresponse_regex = "/\[PUBLISHER\] (Fact check response): \"(.*?)\"\s*\((.*?)\)/";
         
         if(preg_match($subject_regex, $email['overview'][0]->subject)) {
+          //PUBLISHED, NEW VERSION, REVIEW REQUESTED, FACT CHECK REQUESTED
+          //FACT CHECK OKAYED, FACT CHECK OKAYED FOR PUBLICATION, OKAYED FOR PUBLICATION
+          //WORK STARTED, AMENDS NEEDED
           preg_match_all($subject_regex, $email['overview'][0]->subject,$subject_content,PREG_PATTERN_ORDER);
-          
-          if(!empty($subject_content[0])) {
-						
-						$action = $this->action_model->identify_action_id(strtolower($subject_content[1][0]));
-						$user = $this->_fix_user($subject_content[4][0]);
-						
-						$this->message_model->store_message(
-							$action,
-							$user,
-							$subject_content[3][0],
-							$subject_content[2][0],
-							$email['overview'][0]->subject,
-							json_encode($email),
-							strtotime($email['overview'][0]->date)
-						);
-      			
-          } else {
-	
-						$this->message_model->store_message(
-							0,
-							'',
-							'',
-							'',
-							$email['overview'][0]->subject,
-							json_encode($email),
-							strtotime($email['overview'][0]->date)
-						);
-						
-          }
+          $this->_process_status_email($email,$subject_content);
         
-        } elseif(preg_match($fcresponse_subject_regex, $email['overview'][0]->subject)) {
-            preg_match_all($fcresponse_subject_regex, $email['overview'][0]->subject,$subject_content,PREG_PATTERN_ORDER);
-            if(!empty($subject_content[0])) {
-	
-							$action = $this->action_model->identify_action_id(strtolower($subject_content[1][0]));
-	
-							$this->message_model->store_message(
-								$action,
-								'',
-								$subject_content[3][0],
-								$subject_content[2][0],
-								$email['overview'][0]->subject,
-								json_encode($email),
-								strtotime($email['overview'][0]->date)
-							);
-
-            } else {
-							$this->message_model->store_message(
-								0,
-								'',
-								'',
-								'',
-								$email['overview'][0]->subject,
-								json_encode($email),
-								strtotime($email['overview'][0]->date)
-							);
-            }
+        } elseif(preg_match($fcresponse_regex, $email['overview'][0]->subject)) {
+          //FACT CHECK RESPONSE
+          preg_match_all($fcresponse_regex, $email['overview'][0]->subject,$subject_content,PREG_PATTERN_ORDER);
+          $this->_process_fact_check_response_email($email,$subject_content);
+            
+        } elseif(preg_match($assigned_regex, $email['overview'][0]->subject)) {
+          //ASSIGNED
+          preg_match_all($assigned_regex, $email['overview'][0]->subject,$subject_content,PREG_PATTERN_ORDER);
+          $this->_process_assigned_email($email,$subject_content);
+        
+        } elseif(preg_match($created_regex, $email['overview'][0]->subject)) {
+          //CREATED
+          preg_match_all($created_regex, $email['overview'][0]->subject,$subject_content,PREG_PATTERN_ORDER);
+          $this->_process_created_email($email,$subject_content);
             
         } else {
-					$this->message_model->store_message(
-						0,
-						'',
-						'',
-						'',
-						$email['overview'][0]->subject,
-						json_encode($email),
-						strtotime($email['overview'][0]->date)
-					);
+          $this->_process_unknown_email($email);
+
         }
         
         
@@ -136,23 +93,142 @@ class Publisher_scraper extends CI_Controller {
       
     }
     
+  }
+  
+  function _process_status_email($email,$regex_result) {
+    
+    if (!empty($regex_result[0])) {
+      
+      $action = $this->action_model->identify_action_id(strtolower($regex_result[1][0]));
+      
+      $user = $regex_result[4][0];
+      if($user == "") { $user = $this->_find_user_from_content($email['body']); }
+      $user = fix_usernames($user);
+      
+      $this->message_model->store_message(
+				$action,                                //action
+				$user,                                  //user
+				$regex_result[3][0],                    //format
+				$regex_result[2][0],                    //title
+				$email['overview'][0]->subject,         //subject
+				json_encode($email),                    //full email content
+				strtotime($email['overview'][0]->date)  //action date
+			);
+      
+    } else {
+      $this->_process_unknown_email($email);
+    }
+    
+  }
+  
+  function _process_fact_check_response_email($email,$regex_result) {
+    
+    if (!empty($regex_result[0])) {
+      
+			$action = $this->action_model->identify_action_id(strtolower($regex_result[1][0]));
+			
+			$user = $this->_find_user_from_content($email['body']);
+			$user = fix_usernames($user);
+
+			$this->message_model->store_message(
+				$action,                                //action
+				$user,                                  //user
+				$regex_result[3][0],                    //format
+				$regex_result[2][0],                    //title
+				$email['overview'][0]->subject,         //subject
+				json_encode($email),                    //full email content
+				strtotime($email['overview'][0]->date)  //action date
+			);
+      
+    } else {
+      $this->_process_unknown_email($email);
+    }
+    
+  }
+  
+  function _process_assigned_email($email,$regex_result) {
+    
+    if (!empty($regex_result[0])) {
+      
+      $action = $this->action_model->identify_action_id(strtolower($regex_result[1][0]));
+      
+			$user = $regex_result[4][0];
+			if($user == "") { $user = $this->_find_user_from_content($email['body']); }
+			$user = fix_usernames($user);
+
+			$this->message_model->store_message(
+				$action,                                //action
+				$user,                                  //user
+				$regex_result[3][0],                    //format
+				$regex_result[2][0],                    //title
+				$email['overview'][0]->subject,         //subject
+				json_encode($email),                    //full email content
+				strtotime($email['overview'][0]->date)  //action date
+			);
+      
+    } else {
+      $this->_process_unknown_email($email);
+    }
+    
+  }
+  
+  function _process_created_email($email,$regex_result) {
+    
+    if (!empty($regex_result[0])) {
+      
+      $action = $this->action_model->identify_action_id('created');
+      
+			$user = $regex_result[3][0];
+			if($user == "") { $user = $this->_find_user_from_content($email['body']); }
+			$user = fix_usernames($user);
+
+			$this->message_model->store_message(
+				$action,                                //action
+				$user,                                  //user
+				$regex_result[1][0],                    //format
+				$regex_result[2][0],                    //title
+				$email['overview'][0]->subject,         //subject
+				json_encode($email),                    //full email content
+				strtotime($email['overview'][0]->date)  //action date
+			);
+      
+    } else {
+      $this->_process_unknown_email($email);
+    }
+    
+  }
+  
+  function _process_unknown_email($email) {
+    
+		$this->message_model->store_message(
+			0,
+			'',
+			'',
+			'',
+			$email['overview'][0]->subject,
+			json_encode($email),
+			strtotime($email['overview'][0]->date)
+		);
+		
+  }
+  
+  function _find_user_from_content($content) {
+    
+    $user_regex = "/Assigned to: (.*?)\n/";
+      
+    $content = str_replace('\r\n',"\n",$content) ;
+    if(preg_match($user_regex, $content)) {
+      preg_match_all($user_regex, $content, $user_content, PREG_PATTERN_ORDER);
+
+      if(!empty($user_content[0])) {
+        return $user_content[1][0];
+      }
+    }
+    
+    return "";
     
   }
 
-  function _fix_user($username) {
-    switch($username) {
-      case 'SarahRichards': return 'Sarah Richards'; break;
-      case 'JulianMilne': return 'Julian Milne'; break;
-      case 'GrahamSpicer': return 'Graham Spicer'; break;
-      case 'JonSanger': return 'Jon Sanger'; break;
-      case 'DonnaForsyth': return 'Donna Forsyth'; break;
-      case 'DarrylDeaton': return 'Darryl Deaton'; break;
-			case 'BeckThompson': return 'Beck Thompson'; break;
-			case 'MattJarvis': return 'Matt Jarvis'; break;
-			case 'AlanMaddrell': return 'Alan Maddrell'; break;
-      default: return $username;
-    }
-  }
 	
 }
 
