@@ -67,4 +67,18 @@ if ( ! function_exists('convert_to_human_date')) {
 		return $relative_date;
 	}
 }
+
+function time_based_class($time) {
+  
+  $now = time();
+  $diff = $now - $time;
+  if($diff <= 7200) {
+    return 'error';
+  } elseif($diff <= 86400) {
+    return 'warning';
+  } else {
+    return 'info';
+  }
+  
+}
 ?>

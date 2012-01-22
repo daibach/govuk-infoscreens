@@ -78,6 +78,19 @@ class Publisher extends CI_Controller {
 		
 	}
 	
+	public function fact_checks()
+	{
+	  
+	  $this->load->model('message_model');
+	  $this->load->helper(array('date_helper','human_date_helper','publisher_user_helper'));
+	  
+	  $data['fact_checks'] = $this->message_model->load_recent_messages('automatic',30,4);
+	  
+	  $this->load->view('template/head');
+	  $this->load->view('publisher/fact_checks',$data);
+	  $this->load->view('template/foot');
+	  
+	}
 }
 
 /* End of file welcome.php */
