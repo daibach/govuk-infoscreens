@@ -18,15 +18,18 @@ if ( ! function_exists('gravatar_hash')) {
     switch($username) {
       case 'AbbyRudland':         return 'Abby Rudland';        break;
       case 'AlanMaddrell':        return 'Alan Maddrell';       break;
+      case 'AleksMaricic':        return 'Aleks Maricic';       break;
       case 'AnnaTurner':          return 'Anna Turner';         break;
       case 'BeckThompson':        return 'Beck Thompson';       break;
       case 'DafyddVaughan':       return "Dafydd Vaughan";      break;
       case 'DarrylDeaton':        return 'Darryl Deaton';       break;
       case 'DavidBillany':        return 'David Billany';       break;
+      case 'DavidThompson':       return 'David Thompson';      break;
       case 'DeborahStevenson':    return 'Deborah Stevenson';   break;
       case 'DonnaForsyth':        return 'Donna Forsyth';       break;
       case 'GrahamSpicer':        return 'Graham Spicer';       break;
       case 'IanStrafford':        return 'Ian Strafford';       break;
+      case 'IllyWoolfson':        return 'Illy Woolfson';       break;
       case 'HowardGossington':    return 'Howard Gossington';   break;
       case 'JonAshton':           return 'Jon Ashton';          break;
       case 'JonathanTindale':     return 'Jonathan Tindale';    break;
