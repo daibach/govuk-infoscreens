@@ -1,4 +1,4 @@
-<h1>Gov.UK Publishing Updates</h1>
+<h1>GOV.UK Publishing Updates</h1>
 <table width="100%" cellspacing="0" cellpadding="5" border="0">
 <thead>
   <tr>

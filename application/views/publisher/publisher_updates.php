@@ -1,4 +1,4 @@
-<h1>Gov.UK Publishing Updates</h1>
+<h1>GOV.UK Publishing Updates</h1>
 
 <div class="row">
   <div class="span6 updates-publish">

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Gov.UK - Publishing Updates</title>
+    <title>GOV.UK - Publishing Updates</title>
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="robots" content="noindex, nofollow">

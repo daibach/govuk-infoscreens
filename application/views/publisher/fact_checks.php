@@ -1,4 +1,4 @@
-<h1>Gov.UK Publishing Updates</h1>
+<h1>GOV.UK Publishing Updates</h1>
 
 <h2>Fact Check Responses</h2>
 <?php foreach($fact_checks as $msg) :?>
