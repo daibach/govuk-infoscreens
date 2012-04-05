@@ -56,10 +56,10 @@ class Publisher_scraper extends CI_Controller {
 
       foreach($all_emails as $email) {
 
-        $subject_regex = "/\[PUBLISHER\] (Published|New version|Review requested|Fact check requested|Fact check okayed|Amends needed|Work started|Okayed for publication|Fact check okayed for publication): \"(.*?)\"\s*\((.*?)\)\s*by\s*(.*)/";
-        $assigned_regex = "/\[PUBLISHER\] (Assigned): \"(.*?)\"\s*\((.*?)\)\s*to\s*(.*)/";
-        $created_regex = "/\[PUBLISHER\] Created (.*?): \"(.*?)\"\s*\(by\s*(.*)\)/";
-        $fcresponse_regex = "/\[PUBLISHER\] (Fact check response): \"(.*?)\"\s*\((.*?)\)/";
+        $subject_regex = "/\[PUBLISHER\](-BUSINESS){0,1} (Published|New version|Review requested|Fact check requested|Fact check okayed|Amends needed|Work started|Okayed for publication|Fact check okayed for publication): \"(.*?)\"\s*\((.*?)\)\s*by\s*(.*)/";
+        $assigned_regex = "/\[PUBLISHER\](-BUSINESS){0,1} (Assigned): \"(.*?)\"\s*\((.*?)\)\s*to\s*(.*)/";
+        $created_regex = "/\[PUBLISHER\](-BUSINESS){0,1} Created (.*?): \"(.*?)\"\s*\(by\s*(.*)\)/";
+        $fcresponse_regex = "/\[PUBLISHER\](-BUSINESS){0,1} (Fact check response): \"(.*?)\"\s*\((.*?)\)/";
 
         if(preg_match($subject_regex, $email['overview'][0]->subject)) {
           //PUBLISHED, NEW VERSION, REVIEW REQUESTED, FACT CHECK REQUESTED
@@ -99,20 +99,24 @@ class Publisher_scraper extends CI_Controller {
 
     if (!empty($regex_result[0])) {
 
-      $action = $this->action_model->identify_action_id(strtolower($regex_result[1][0]));
+      $action = $this->action_model->identify_action_id(strtolower($regex_result[2][0]));
 
-      $user = $regex_result[4][0];
+      $business_content = 0;
+      if($regex_result[1][0] != '') { $business_content = 1; }
+
+      $user = $regex_result[5][0];
       if($user == "") { $user = $this->_find_user_from_content($email['body']); }
       $user = fix_usernames($user);
 
       $this->message_model->store_message(
         $action,                                //action
         $user,                                  //user
-        $regex_result[3][0],                    //format
-        $regex_result[2][0],                    //title
+        $regex_result[4][0],                    //format
+        $regex_result[3][0],                    //title
         $email['overview'][0]->subject,         //subject
         json_encode($email),                    //full email content
-        strtotime($email['overview'][0]->date)  //action date
+        strtotime($email['overview'][0]->date), //action date
+        $business_content                       //business email
       );
 
     } else {
@@ -125,7 +129,10 @@ class Publisher_scraper extends CI_Controller {
 
     if (!empty($regex_result[0])) {
 
-      $action = $this->action_model->identify_action_id(strtolower($regex_result[1][0]));
+      $action = $this->action_model->identify_action_id(strtolower($regex_result[2][0]));
+
+      $business_content = 0;
+      if($regex_result[1][0] != '') { $business_content = 1; }
 
       $user = $this->_find_user_from_content($email['body']);
       $user = fix_usernames($user);
@@ -133,11 +140,12 @@ class Publisher_scraper extends CI_Controller {
       $this->message_model->store_message(
         $action,                                //action
         $user,                                  //user
-        $regex_result[3][0],                    //format
-        $regex_result[2][0],                    //title
+        $regex_result[4][0],                    //format
+        $regex_result[3][0],                    //title
         $email['overview'][0]->subject,         //subject
         json_encode($email),                    //full email content
-        strtotime($email['overview'][0]->date)  //action date
+        strtotime($email['overview'][0]->date), //action date
+        $business_content                       //business email
       );
 
     } else {
@@ -150,20 +158,24 @@ class Publisher_scraper extends CI_Controller {
 
     if (!empty($regex_result[0])) {
 
-      $action = $this->action_model->identify_action_id(strtolower($regex_result[1][0]));
+      $action = $this->action_model->identify_action_id(strtolower($regex_result[2][0]));
 
-      $user = $regex_result[4][0];
+     $business_content = 0;
+     if($regex_result[1][0] != '') { $business_content = 1; }
+
+      $user = $regex_result[5][0];
       if($user == "") { $user = $this->_find_user_from_content($email['body']); }
       $user = fix_usernames($user);
 
       $this->message_model->store_message(
         $action,                                //action
         $user,                                  //user
-        $regex_result[3][0],                    //format
-        $regex_result[2][0],                    //title
+        $regex_result[4][0],                    //format
+        $regex_result[3][0],                    //title
         $email['overview'][0]->subject,         //subject
         json_encode($email),                    //full email content
-        strtotime($email['overview'][0]->date)  //action date
+        strtotime($email['overview'][0]->date), //action date
+        $business_content                       //business email
       );
 
     } else {
@@ -178,18 +190,22 @@ class Publisher_scraper extends CI_Controller {
 
       $action = $this->action_model->identify_action_id('created');
 
-      $user = $regex_result[3][0];
+      $business_content = 0;
+      if($regex_result[1][0] != '') { $business_content = 1; }
+
+      $user = $regex_result[4][0];
       if($user == "") { $user = $this->_find_user_from_content($email['body']); }
       $user = fix_usernames($user);
 
       $this->message_model->store_message(
         $action,                                //action
         $user,                                  //user
-        $regex_result[1][0],                    //format
-        $regex_result[2][0],                    //title
+        $regex_result[2][0],                    //format
+        $regex_result[3][0],                    //title
         $email['overview'][0]->subject,         //subject
         json_encode($email),                    //full email content
-        strtotime($email['overview'][0]->date)  //action date
+        strtotime($email['overview'][0]->date), //action date
+        $business_content                       //business email
       );
 
     } else {
@@ -207,7 +223,8 @@ class Publisher_scraper extends CI_Controller {
       '',
       $email['overview'][0]->subject,
       json_encode($email),
-      strtotime($email['overview'][0]->date)
+      strtotime($email['overview'][0]->date),
+      0
     );
 
   }

@@ -2,18 +2,19 @@
 
 class Message_model extends CI_Model {
 
-  public function store_message($action,$user,$format,$title,$subject,$content,$date) {
+  public function store_message($action,$user,$format,$title,$subject,$content,$date,$business=0) {
 
       if($format == 'Localtransaction') $format = 'Local transaction';
 
       $data = array(
-        'action'      =>$action,
-        'user'        =>$user,
-        'format'      =>$format,
-        'title'       =>$title,
-        'subject'     =>$subject,
-        'content'     =>$content,
-        'action_date' =>date('Y-m-d H:i:s',$date)
+        'action'            =>$action,
+        'user'              =>$user,
+        'format'            =>$format,
+        'title'             =>$title,
+        'subject'           =>$subject,
+        'content'           =>$content,
+        'action_date'       =>date('Y-m-d H:i:s',$date),
+        'business_content'  => $business
       );
 
       $this->db->insert('messages',$data);
