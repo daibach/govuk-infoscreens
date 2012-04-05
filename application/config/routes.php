@@ -41,6 +41,8 @@
 $route['default_controller'] = "welcome";
 $route['404_override'] = '';
 
+$route['publisher/business'] = "publisher/index/business";
+$route['publisher/business/(:any)'] = "publisher/$1/business";
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
