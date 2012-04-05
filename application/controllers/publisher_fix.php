@@ -2,12 +2,12 @@
 
 class Publisher_fix extends CI_Controller {
 
-	public function index()
-	{
-		show_404();	
-	}
+  public function index()
+  {
+    show_404();
+  }
 
-	function cleanup_users() {
+  function cleanup_users() {
 
     $this->db->where('user not like','');
     $this->db->order_by('id','desc');
@@ -15,7 +15,7 @@ class Publisher_fix extends CI_Controller {
     if($qry->num_rows() > 0) {
       $results = $qry->result();
       foreach($results as $email) {
-        
+
         $user = $email->user;
         $user = fix_usernames($user);
         $data = array('user'=>$user);
@@ -24,20 +24,20 @@ class Publisher_fix extends CI_Controller {
 
       }
     }
-	  
-	}
-	
-	function cleanup_local_transactions() {
+
+  }
+
+  function cleanup_local_transactions() {
 
     $data = array('format'=>'Local transaction');
     $this->db->where('format','Localtransaction');
     $this->db->update('messages',$data);
-	  
-	}
-	
-	function identify_created_items() {
-	  $this->load->model('action_model');
-	  $created_action = $this->action_model->identify_action_id('created');
+
+  }
+
+  function identify_created_items() {
+    $this->load->model('action_model');
+    $created_action = $this->action_model->identify_action_id('created');
 
     $this->db->where('action',0);
     $this->db->order_by('id','desc');
@@ -49,34 +49,34 @@ class Publisher_fix extends CI_Controller {
         $subject_regex = "/\[PUBLISHER\] Created (.*?): \"(.*?)\"\s*\(by\s*(.*)\)/";
         if(preg_match($subject_regex, $email->subject)) {
           preg_match_all($subject_regex, $email->subject, $subject_content, PREG_PATTERN_ORDER);
-          
+
           if(!empty($subject_content[0])) {
-            
+
             $user = $subject_content[3][0];
-						$user = fix_usernames($user);
-						
-						$data = array(
-						  'action'  => $created_action,
-						  'format'  => $subject_content[1][0],
-						  'title'   => $subject_content[2][0],
-						  'user'    => $user
-						);
-						//print_r($data);
-						//echo("\n");
-						$this->db->where('id',$email->id);
-						$this->db->update('messages',$data);
+            $user = fix_usernames($user);
+
+            $data = array(
+              'action'  => $created_action,
+              'format'  => $subject_content[1][0],
+              'title'   => $subject_content[2][0],
+              'user'    => $user
+            );
+            //print_r($data);
+            //echo("\n");
+            $this->db->where('id',$email->id);
+            $this->db->update('messages',$data);
           }
 
         }
 
       }
     }
-	  
-	}
-	
-	function identify_assigned_items() {
-	  $this->load->model('action_model');
-	  $assigned_action = $this->action_model->identify_action_id('assigned');
+
+  }
+
+  function identify_assigned_items() {
+    $this->load->model('action_model');
+    $assigned_action = $this->action_model->identify_action_id('assigned');
 
     $this->db->where('action',0);
     $this->db->order_by('id','desc');
@@ -90,32 +90,32 @@ class Publisher_fix extends CI_Controller {
           preg_match_all($subject_regex, $email->subject, $subject_content, PREG_PATTERN_ORDER);
 
           if(!empty($subject_content[0])) {
-            
+
             $user = $subject_content[3][0];
-						$user = fix_usernames($user);
-						
-						$data = array(
-						  'action'  => $assigned_action,
-						  'format'  => $subject_content[2][0],
-						  'title'   => $subject_content[1][0],
-						  'user'    => $user
-						);
-						//print_r($data);
-						//echo("\n");
-						$this->db->where('id',$email->id);
-						$this->db->update('messages',$data);
+            $user = fix_usernames($user);
+
+            $data = array(
+              'action'  => $assigned_action,
+              'format'  => $subject_content[2][0],
+              'title'   => $subject_content[1][0],
+              'user'    => $user
+            );
+            //print_r($data);
+            //echo("\n");
+            $this->db->where('id',$email->id);
+            $this->db->update('messages',$data);
           }
 
         }
 
       }
     }
-	  
-	}
-	
-	function identify_new_version_items() {
-	  $this->load->model('action_model');
-	  $new_action = $this->action_model->identify_action_id('new version');
+
+  }
+
+  function identify_new_version_items() {
+    $this->load->model('action_model');
+    $new_action = $this->action_model->identify_action_id('new version');
 
     $this->db->where('action',0);
     $this->db->order_by('id','desc');
@@ -129,32 +129,32 @@ class Publisher_fix extends CI_Controller {
           preg_match_all($subject_regex, $email->subject, $subject_content, PREG_PATTERN_ORDER);
 
           if(!empty($subject_content[0])) {
-            
-            $user = $subject_content[3][0];
-						$user = fix_usernames($user);
-						
-						$data = array(
-						  'action'  => $new_action,
-						  'format'  => $subject_content[2][0],
-						  'title'   => $subject_content[1][0],
-						  'user'    => $user
-						);
 
-						$this->db->where('id',$email->id);
-						$this->db->update('messages',$data);
+            $user = $subject_content[3][0];
+            $user = fix_usernames($user);
+
+            $data = array(
+              'action'  => $new_action,
+              'format'  => $subject_content[2][0],
+              'title'   => $subject_content[1][0],
+              'user'    => $user
+            );
+
+            $this->db->where('id',$email->id);
+            $this->db->update('messages',$data);
           }
 
         }
 
       }
     }
-	  
-	}
-	
+
+  }
+
   function identify_user_from_content() {
-  
+
     $assigned_regex = "/Assigned to: (.*?)\n/";
-  
+
     $this->db->where('user','');
     $this->db->order_by('id','desc');
     $qry = $this->db->get('messages');
@@ -167,7 +167,7 @@ class Publisher_fix extends CI_Controller {
           preg_match_all($assigned_regex, $email->content, $assigned_content, PREG_PATTERN_ORDER);
 
           if(!empty($assigned_content[0])) {
-            
+
             $user = $assigned_content[1][0];
             $user = fix_usernames($user);
 
@@ -179,7 +179,7 @@ class Publisher_fix extends CI_Controller {
         }
       }
     }
-  
+
   }
 
   function remove_duplicates() {
@@ -188,15 +188,15 @@ class Publisher_fix extends CI_Controller {
     $qry = $this->db->get('messages');
     if($qry->num_rows() > 0) {
       $results = $qry->result();
-    
+
       $action = -1;
       $user = '12345';
       $format = '12345';
       $title = '12345';
       $subject = '12345';
-      $date = '12345';      
+      $date = '12345';
       $remove = array();
-    
+
       foreach($results as $record) {
         if (
            $record->action   != $action  ||
@@ -205,7 +205,7 @@ class Publisher_fix extends CI_Controller {
            $record->title    != $title   ||
            $record->subject  != $subject ||
            $record->action_date != $date
-           ) 
+           )
         {
           $action = $record->action;
           $user = $record->user;
@@ -217,16 +217,16 @@ class Publisher_fix extends CI_Controller {
           array_push($remove,$record);
         }
       }
-    
+
       foreach($remove as $r) {
 
         $this->db->where('id',$r->id);
         $this->db->delete('messages');
-      
+
       }
-    
+
     }
-  
+
   }
 
 }
