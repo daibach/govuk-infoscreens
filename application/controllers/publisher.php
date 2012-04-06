@@ -8,6 +8,7 @@ class Publisher extends CI_Controller {
     $this->load->model(array('message_model'));
     $this->load->helper(array('date_helper','human_date_helper','publisher_user_helper'));
 
+    $data['format'] = $format;
     $data['published_messages'] = $this->message_model->load_recent_messages('published',30,0,$format);
     $data['action_messages'] = $this->message_model->load_recent_messages('action',30,0,$format);
     $data['automatic_messages'] = $this->message_model->load_recent_messages('automatic',30,0,$format);
@@ -27,6 +28,7 @@ class Publisher extends CI_Controller {
     $today = $this->message_model->load_count_date($date,$format);
     $thisweek = $this->message_model->load_count_week($date,$format);
 
+    $data['format'] = $format;
     $data['today'] = $this->message_model->convert_count_result($today);
     $data['thisweek'] = $this->message_model->convert_count_result($thisweek);
     $data['thisdate'] = $date;
@@ -49,6 +51,7 @@ class Publisher extends CI_Controller {
     $today = $this->message_model->load_count_date($data['thisdate'],$format);
     $yesterday = $this->message_model->load_count_date($data['yesterdaydate'],$format);
 
+    $data['format'] = $format;
     $data['today'] = $this->message_model->convert_count_result($today);
     $data['yesterday'] = $this->message_model->convert_count_result($yesterday);
 
@@ -70,6 +73,7 @@ class Publisher extends CI_Controller {
     $thisweek = $this->message_model->load_count_week($data['thisdate'],$format);
     $lastweek = $this->message_model->load_count_week($data['lastdate'],$format);
 
+    $data['format'] = $format;
     $data['thisweek'] = $this->message_model->convert_count_result($thisweek);
     $data['lastweek'] = $this->message_model->convert_count_result($lastweek);
 
@@ -85,6 +89,7 @@ class Publisher extends CI_Controller {
     $this->load->model('message_model');
     $this->load->helper(array('date_helper','human_date_helper','publisher_user_helper'));
 
+    $data['format'] = $format;
     $data['fact_checks'] = $this->message_model->load_recent_messages('automatic',30,4,$format);
 
     $this->load->view('template/head');
