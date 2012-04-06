@@ -15,27 +15,26 @@
 
     <!-- Le styles -->
     <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
-    <style type="text/css">
-    body {background: #000; }
-    h1 { padding-top: 20px; border-bottom: #fff 1px solid; }
-    h2 { padding-bottom: 20px; }
-    h1, h2 { color: #fff; }
-    .alert-message span { font-size: 0.5em; color: #000; display: block; text-align: right;}
-    .updates-publish .alert-message { font-size: 1.7em; line-height: 1.2em; min-height: 68px; }
-    .updates-other .alert-message { font-size: 1.2em; line-height: 1.2em; min-height: 32px; }
-    .updates-other .alert-message span { font-size: 0.7em; }
-    .alert-message img { float: right; margin-left: 10px; border: #000 1px solid; }
-    .inbound, .outbound { background: #333; color: #fff; text-shadow: none; }
-    .inbound span, .outbound span { color: #fff; }
-    .inbound { background: #333 url(/images/mail-icon.png) no-repeat 6px 6px; padding-left: 44px; }
-    .fcitem { font-size: 2em; }
-    .fcitem .alert-message { line-height: 1.2em; }
-    .fcitem .alert-message em { color:#000; font-style:normal; padding-left: 20px; font-size: 0.9em }
-    span.inbound { background-position: -6px -3px; }
-    #stats { color: #000; }
-    </style>
+    <link rel="stylesheet" href="/css/core.css">
 
   </head>
 
   <body>
+
+    <a href="#content" class="visuallyhidden">Skip to main content</a>
+
+    <header role="banner" class="group" id="global-header">
+      <div class="header-global group">
+        <h1><a href="/" title="Go to the gov.uk homepage">GOV.UK</a></h1>
+        <nav role="navigation">
+          <ul>
+            <li><a href="<?php echo site_url('publisher'); ?>">Citizen Now</a></li>
+            <li><a href="<?php echo site_url('publisher/today'); ?>">Citizen Today</a></li>
+            <li><a href="<?php echo site_url('publisher/business'); ?>">Business Now</a></li>
+            <li><a href="<?php echo site_url('publisher/today/business'); ?>">Business Today</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
     <div class="container">

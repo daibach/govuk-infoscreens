@@ -1,6 +1,9 @@
-<h1>GOV.UK Publishing Updates</h1>
+<?php if($format==='business') : ?>
+  <h2>Latest Business Fact Check Responses</h2>
+<?php else : ?>
+  <h2>Latest Citizen Fact Check Responses</h2>
+<?php endif; ?>
 
-<h2>Fact Check Responses</h2>
 <?php foreach($fact_checks as $msg) :?>
 <div class="fcitem">
   <div class="alert-message <?php echo time_based_class(mysql_to_unix($msg->action_date));?>">

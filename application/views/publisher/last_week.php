@@ -1,5 +1,10 @@
-<h1>GOV.UK Publishing Updates</h1>
-<table width="100%" cellspacing="0" cellpadding="5" border="0">
+<?php if($format==='business') : ?>
+  <h2>Latest Business Publisher Updates</h2>
+<?php else : ?>
+  <h2>Latest Citizen Publisher Updates</h2>
+<?php endif; ?>
+
+<table class="blocks" width="100%" cellspacing="0" cellpadding="5" border="0">
 <thead>
   <tr>
     <th>&nbsp;</th>
@@ -105,13 +110,3 @@
   </tr>
 </tbody>
 </table>
-
-<style>
-table th { font-size: 2em; color: #fff;  }
-table th span { color: #666; font-weight: normal; }
-table td { color: #fff; font-size: 1.6em; border-top: 0; padding: 5px 15px 0 15px; line-height: 1.5em; }
-table td.today { background: #1a1a1a; width: 390px; }
-table td.format { padding-left: 0; }
-table td.thisweek { padding-right: 0; width: 390px; }
-table td .label { font-size: 1em; padding: 0 7px; }
-</style>

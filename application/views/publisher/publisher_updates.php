@@ -1,8 +1,12 @@
-<h1>GOV.UK Publishing Updates</h1>
+<?php if($format==='business') : ?>
+  <h2>Latest Business Publisher Updates</h2>
+<?php else : ?>
+  <h2>Latest Citizen Publisher Updates</h2>
+<?php endif; ?>
 
 <div class="row">
   <div class="span6 updates-publish">
-    <h2>Recently Published</h2>
+    <h3>Recently Published</h3>
     <?php foreach($published_messages as $msg) : ?>
       <div class="alert-message success">
         <img src="http://www.gravatar.com/avatar/<?php if(gravatar_hash($msg->user)) : echo gravatar_hash($msg->user); else : echo "null"; endif; ?>?s=64" width="64" height="64" alt="#" />
@@ -13,7 +17,7 @@
   </div>
 
   <div class="span5 updates-other">
-    <h2>Action Updates</h2>
+    <h3>Action Updates</h3>
     <?php foreach($action_messages as $msg) : ?>
       <div class="alert-message <?php echo $msg->action_format; ?>">
         <?php if(gravatar_hash($msg->user)) : ?><img src="http://www.gravatar.com/avatar/<?php echo gravatar_hash($msg->user); ?>?s=32" width="32" height="32" alt="#" /><?php endif; ?>
@@ -24,7 +28,7 @@
   </div>
 
   <div class="span5 updates-other">
-    <h2>Fact Check Updates</h2>
+    <h3>Fact Check Updates</h3>
     <?php foreach($automatic_messages as $msg) : ?>
       <?php if($msg->action_name == 'fact check response') : ?>
         <div class="alert-message <?php echo $msg->action_format; ?>">

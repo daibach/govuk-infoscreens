@@ -1,0 +1,34 @@
+body {background: #000; }
+h2 { margin: 0; padding: 0; color: #fff;}
+h3 { color: #F17921; }
+.alert-message span { font-size: 0.5em; color: #000; display: block; text-align: right;}
+.updates-publish .alert-message { font-size: 1.7em; line-height: 1.2em; min-height: 68px; }
+.updates-other .alert-message { font-size: 1.2em; line-height: 1.2em; min-height: 32px; }
+.updates-other .alert-message span { font-size: 0.7em; }
+.alert-message img { float: right; margin-left: 10px; border: #000 1px solid; }
+.inbound, .outbound { background: #333; color: #fff; text-shadow: none; }
+.inbound span, .outbound span { color: #fff; }
+.inbound { background: #333 url(/images/mail-icon.png) no-repeat 6px 6px; padding-left: 44px; }
+.fcitem { font-size: 2em; }
+.fcitem .alert-message { line-height: 1.2em; }
+.fcitem .alert-message em { color:#000; font-style:normal; padding-left: 20px; font-size: 0.9em }
+span.inbound { background-position: -6px -3px; }
+#stats { color: #000; }
+
+header { z-index: 1000; background-color: rgba(0, 0, 0, 0.8); padding: 0.4em 0; position: fixed; top: 0; width: 100%; display: block; }
+header .header-global { margin: 0 auto; max-width: 1280px; width: 81%; }
+#global-header h1 { font-family: 'Gill Sans W01 Medium', sans-serif; font-size: 2.0em; font-weight: normal; float: left; letter-spacing: 0.05em; line-height: 1.15em; margin: 0 1.5em 0 0; padding: 0; text-transform: uppercase; border: 0; }
+#global-header h1 a { background-image: url(/images/header-crown.png); background-position: 0 0; background-repeat: no-repeat; float: left; padding: 0 0 0 1.7em; color: #fff; }
+nav { display: block; margin:0; padding:0; }
+header .header-global ul { margin-right: 0; float: left; line-height: 2em; margin: 0; padding: 0; list-style: none; }
+header .header-global ul li { line-height: 1.75em; margin: 0.4em 1.5em 0 0; float: left; }
+header .header-global ul li a { text-decoration: none; color: #fff;}
+.container { padding-top: 2em;}
+
+table.blocks th { font-size: 1.8em; color: #F17921;  }
+table.blocks th span { color: #D43783; font-weight: normal; }
+table.blocks td { color: #fff; font-size: 1.6em; border-top: 0; padding: 5px 15px 0 15px; line-height: 1.5em; }
+table.blocks td.today { background: #1a1a1a; width: 390px; }
+table.blocks td.format { padding-left: 0; }
+table.blocks td.thisweek { padding-right: 0; width: 390px; }
+table.blocks td .label { font-size: 1em; padding: 0 7px; }
