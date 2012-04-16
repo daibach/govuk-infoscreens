@@ -14,6 +14,7 @@ class Publisher_scraper extends CI_Controller {
 
     $emails = $this->_load_emails(GOVUK_IMAP_HOSTNAME.'INBOX',GOVUK_IMAP_USERNAME,GOVUK_IMAP_PASSWORD);
     $this->_process_emails($emails);
+    $this->_identify_missing_authors();
 
   }
 
@@ -231,6 +232,24 @@ class Publisher_scraper extends CI_Controller {
       strtotime($email['overview'][0]->date),
       0
     );
+
+  }
+
+  function _identify_missing_authors() {
+
+    $this->load->model('author_model','authors');
+
+    $author_records = $this->authors->all();
+    $existing_authors = array();
+    foreach($author_records as $r) {
+      array_push($existing_authors,$r->user_name);
+    }
+
+    $missing_records = $this->authors->identify_missing_publication_users($existing_authors);
+
+    foreach($missing_records as $r) {
+      $this->authors->create($r->user);
+    }
 
   }
 
