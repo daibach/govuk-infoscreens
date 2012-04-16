@@ -104,9 +104,8 @@ class Publisher_scraper extends CI_Controller {
       $business_content = 0;
       if($regex_result[1][0] != '') { $business_content = 1; }
 
-      $user = $regex_result[5][0];
-      if($user == "") { $user = identify_user_from_content($email['body']); }
-      $user = fix_usernames($user);
+      $user = identify_user_from_content($email['body']);
+      if($user == "") { $user = $regex_result[5][0]; }
 
       $this->message_model->store_message(
         $action,                                //action
@@ -135,7 +134,6 @@ class Publisher_scraper extends CI_Controller {
       if($regex_result[1][0] != '') { $business_content = 1; }
 
       $user = identify_user_from_content($email['body']);
-      $user = fix_usernames($user);
 
       $this->message_model->store_message(
         $action,                                //action
@@ -163,9 +161,8 @@ class Publisher_scraper extends CI_Controller {
      $business_content = 0;
      if($regex_result[1][0] != '') { $business_content = 1; }
 
-      $user = $regex_result[5][0];
-      if($user == "") { $user = identify_user_from_content($email['body']); }
-      $user = fix_usernames($user);
+     $user = identify_user_from_content($email['body']);
+     if($user == "") { $user = $regex_result[5][0]; }
 
       $this->message_model->store_message(
         $action,                                //action
@@ -193,9 +190,8 @@ class Publisher_scraper extends CI_Controller {
       $business_content = 0;
       if($regex_result[1][0] != '') { $business_content = 1; }
 
-      $user = $regex_result[4][0];
-      if($user == "") { $user = identify_user_from_content($email['body']); }
-      $user = fix_usernames($user);
+      $user = identify_user_from_content($email['body']);
+      if($user == "") { $user = $regex_result[4][0]; }
 
       $this->message_model->store_message(
         $action,                                //action
