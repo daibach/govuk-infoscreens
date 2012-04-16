@@ -25,6 +25,7 @@ class Message_model extends CI_Model {
 
     $this->db->where('action_type',$action_type);
     $this->db->join('actions','actions.id=messages.action');
+    $this->db->join('authors','authors.user_name=messages.user');
     $this->db->order_by('action_date','desc');
     if($limit > 0) { $this->db->limit($limit); }
     if($action_id > 0) { $this->db->where('actions.id',$action_id); }
