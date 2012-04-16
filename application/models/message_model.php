@@ -8,10 +8,10 @@ class Message_model extends CI_Model {
 
       $data = array(
         'action'            =>$action,
-        'user'              =>$user,
-        'format'            =>$format,
-        'title'             =>$title,
-        'subject'           =>$subject,
+        'user'              =>trim($user),
+        'format'            =>trim($format),
+        'title'             =>trim($title),
+        'subject'           =>trim($subject),
         'content'           =>$content,
         'action_date'       =>date('Y-m-d H:i:s',$date),
         'business_content'  => $business
