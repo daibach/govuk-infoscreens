@@ -7,26 +7,6 @@ class Publisher_fix extends CI_Controller {
     show_404();
   }
 
-  function cleanup_users() {
-
-    $this->db->where('user not like','');
-    $this->db->order_by('id','desc');
-    $qry = $this->db->get('messages');
-    if($qry->num_rows() > 0) {
-      $results = $qry->result();
-      foreach($results as $email) {
-
-        $user = $email->user;
-        $user = fix_usernames($user);
-        $data = array('user'=>$user);
-        $this->db->where('id',$email->id);
-        $this->db->update('messages',$data);
-
-      }
-    }
-
-  }
-
   function cleanup_local_transactions() {
 
     $data = array('format'=>'Local transaction');
@@ -53,7 +33,6 @@ class Publisher_fix extends CI_Controller {
           if(!empty($subject_content[0])) {
 
             $user = $subject_content[3][0];
-            $user = fix_usernames($user);
 
             $data = array(
               'action'  => $created_action,
@@ -92,7 +71,6 @@ class Publisher_fix extends CI_Controller {
           if(!empty($subject_content[0])) {
 
             $user = $subject_content[3][0];
-            $user = fix_usernames($user);
 
             $data = array(
               'action'  => $assigned_action,
@@ -131,7 +109,6 @@ class Publisher_fix extends CI_Controller {
           if(!empty($subject_content[0])) {
 
             $user = $subject_content[3][0];
-            $user = fix_usernames($user);
 
             $data = array(
               'action'  => $new_action,
@@ -169,7 +146,6 @@ class Publisher_fix extends CI_Controller {
           if(!empty($assigned_content[0])) {
 
             $user = $assigned_content[1][0];
-            $user = fix_usernames($user);
 
             $data = array('user'=>$user);
             $this->db->where('id',$email->id);
