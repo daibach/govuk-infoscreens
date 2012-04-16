@@ -158,12 +158,12 @@ class Publisher_fix extends CI_Controller {
 
   }
 
-  function remove_duplicates() {
+  function remove_duplicates($action=1) {
 
     $this->db->save_queries = false;
 
     $this->db->order_by('action, action_date');
-    $this->db->where('action',11);
+    $this->db->where('action',$action);
     $qry = $this->db->get('messages');
     if($qry->num_rows() > 0) {
       $results = $qry->result();
@@ -210,13 +210,13 @@ class Publisher_fix extends CI_Controller {
 
   }
 
-  function cleanup_titles() {
+  function cleanup_titles($action=1) {
 
     $this->db->save_queries = false;
 
     $this->load->helper('publisher_data_helper');
 
-    $this->db->where('action',1);
+    $this->db->where('action',$action);
     $query = $this->db->get('messages');
 
     if($query->num_rows() > 0) {
