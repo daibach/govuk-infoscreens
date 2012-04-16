@@ -4,18 +4,37 @@ class Publisher extends CI_Controller {
 
   public function index($format='citizen')
   {
+    if($format=='business') {
+      $this->_business_index();
+    } else {
+      $this->load->model(array('message_model'));
+      $this->load->helper(array('date_helper','human_date_helper'));
+
+      $data['format'] = $format;
+      $data['published_messages'] = $this->message_model->load_recent_messages('published',30,0,$format);
+      $data['action_messages'] = $this->message_model->load_recent_messages('action',30,0,$format);
+      $data['automatic_messages'] = $this->message_model->load_recent_messages('automatic',30,0,$format);
+
+      $this->load->view('template/head');
+      $this->load->view('publisher/publisher_updates',$data);
+      $this->load->view('template/foot');
+    }
+  }
+
+  function _business_index() {
 
     $this->load->model(array('message_model'));
     $this->load->helper(array('date_helper','human_date_helper'));
 
-    $data['format'] = $format;
-    $data['published_messages'] = $this->message_model->load_recent_messages('published',30,0,$format);
+    $data['format'] = $format = 'business';
+    $data['other_messages'] = $this->message_model->load_recent_messages('other',30,0,$format);
     $data['action_messages'] = $this->message_model->load_recent_messages('action',30,0,$format);
     $data['automatic_messages'] = $this->message_model->load_recent_messages('automatic',30,0,$format);
 
     $this->load->view('template/head');
-    $this->load->view('publisher/publisher_updates',$data);
+    $this->load->view('publisher/updates_business',$data);
     $this->load->view('template/foot');
+
   }
 
   public function today($format='citizen')
