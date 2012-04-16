@@ -6,7 +6,7 @@ class Publisher extends CI_Controller {
   {
 
     $this->load->model(array('message_model'));
-    $this->load->helper(array('date_helper','human_date_helper','publisher_user_helper'));
+    $this->load->helper(array('date_helper','human_date_helper'));
 
     $data['format'] = $format;
     $data['published_messages'] = $this->message_model->load_recent_messages('published',30,0,$format);
@@ -87,7 +87,7 @@ class Publisher extends CI_Controller {
   {
 
     $this->load->model('message_model');
-    $this->load->helper(array('date_helper','human_date_helper','publisher_user_helper'));
+    $this->load->helper(array('date_helper','human_date_helper'));
 
     $data['format'] = $format;
     $data['fact_checks'] = $this->message_model->load_recent_messages('automatic',30,4,$format);
