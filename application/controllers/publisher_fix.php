@@ -184,7 +184,10 @@ class Publisher_fix extends CI_Controller {
 
   function remove_duplicates() {
 
+    $this->db->save_queries = false;
+
     $this->db->order_by('action, action_date');
+    $this->db->where('action',11);
     $qry = $this->db->get('messages');
     if($qry->num_rows() > 0) {
       $results = $qry->result();
@@ -227,6 +230,57 @@ class Publisher_fix extends CI_Controller {
 
     }
 
+    $this->db->save_queries = true;
+
   }
+
+  function cleanup_titles() {
+
+    $this->db->save_queries = false;
+
+    $this->load->helper('publisher_data_helper');
+
+    $this->db->where('action',1);
+    $query = $this->db->get('messages');
+
+    if($query->num_rows() > 0) {
+      echo('<table width="100%" border="1">');
+
+      $records = $query->result();
+      foreach($records as $r) {
+
+        $email_content = json_decode($r->content);
+        $new_title = identify_title_from_content($email_content->body);
+
+        echo("\n<tr>\n");
+        echo("<td>".$r->id."</td>");
+        echo("<td>".$r->title."</td>");
+        if($new_title == '') {
+          echo('<td>');
+          print_r($email_content->body);
+          echo('</td>');
+        }
+        elseif($new_title != $r->title && $new_title != '') {
+
+          $data = array('title' => $new_title);
+          $this->db->where('id', $r->id);
+          $this->db->update('messages', $data);
+
+          echo("<td>".$new_title."</td>");
+        } else {
+          echo("<td style='color:#ccc'>NO CHANGE</td>");
+        }
+        echo("\n</tr>\n");
+
+      }
+      echo('</table>');
+
+    }
+
+    $this->db->save_queries = true;
+
+
+  }
+
 
 }

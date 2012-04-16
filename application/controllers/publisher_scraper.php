@@ -10,7 +10,7 @@ class Publisher_scraper extends CI_Controller {
   function scrape() {
 
     $this->load->model(array('action_model','message_model'));
-    $this->load->helper('date_helper');
+    $this->load->helper('date_helper','publisher_data_helper');
 
     $emails = $this->_load_emails(GOVUK_IMAP_HOSTNAME.'INBOX',GOVUK_IMAP_USERNAME,GOVUK_IMAP_PASSWORD);
     $this->_process_emails($emails);
@@ -105,7 +105,7 @@ class Publisher_scraper extends CI_Controller {
       if($regex_result[1][0] != '') { $business_content = 1; }
 
       $user = $regex_result[5][0];
-      if($user == "") { $user = $this->_find_user_from_content($email['body']); }
+      if($user == "") { $user = identify_user_from_content($email['body']); }
       $user = fix_usernames($user);
 
       $this->message_model->store_message(
@@ -134,7 +134,7 @@ class Publisher_scraper extends CI_Controller {
       $business_content = 0;
       if($regex_result[1][0] != '') { $business_content = 1; }
 
-      $user = $this->_find_user_from_content($email['body']);
+      $user = identify_user_from_content($email['body']);
       $user = fix_usernames($user);
 
       $this->message_model->store_message(
@@ -164,7 +164,7 @@ class Publisher_scraper extends CI_Controller {
      if($regex_result[1][0] != '') { $business_content = 1; }
 
       $user = $regex_result[5][0];
-      if($user == "") { $user = $this->_find_user_from_content($email['body']); }
+      if($user == "") { $user = identify_user_from_content($email['body']); }
       $user = fix_usernames($user);
 
       $this->message_model->store_message(
@@ -194,7 +194,7 @@ class Publisher_scraper extends CI_Controller {
       if($regex_result[1][0] != '') { $business_content = 1; }
 
       $user = $regex_result[4][0];
-      if($user == "") { $user = $this->_find_user_from_content($email['body']); }
+      if($user == "") { $user = identify_user_from_content($email['body']); }
       $user = fix_usernames($user);
 
       $this->message_model->store_message(
@@ -229,22 +229,6 @@ class Publisher_scraper extends CI_Controller {
 
   }
 
-  function _find_user_from_content($content) {
-
-    $user_regex = "/Assigned to: (.*?)\n/";
-
-    $content = str_replace('\r\n',"\n",$content) ;
-    if(preg_match($user_regex, $content)) {
-      preg_match_all($user_regex, $content, $user_content, PREG_PATTERN_ORDER);
-
-      if(!empty($user_content[0])) {
-        return $user_content[1][0];
-      }
-    }
-
-    return "";
-
-  }
 
 
 }
