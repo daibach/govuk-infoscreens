@@ -107,11 +107,14 @@ class Publisher_scraper extends CI_Controller {
       $user = identify_user_from_content($email['body']);
       if($user == "") { $user = $regex_result[5][0]; }
 
+      $title = identify_title_from_content($email['body']);
+      if($title == "") { $title = $regex_result[3][0]; }
+
       $this->message_model->store_message(
         $action,                                //action
         $user,                                  //user
         $regex_result[4][0],                    //format
-        $regex_result[3][0],                    //title
+        $title,                                 //title
         $email['overview'][0]->subject,         //subject
         json_encode($email),                    //full email content
         strtotime($email['overview'][0]->date), //action date
@@ -164,11 +167,14 @@ class Publisher_scraper extends CI_Controller {
      $user = identify_user_from_content($email['body']);
      if($user == "") { $user = $regex_result[5][0]; }
 
+     $title = identify_title_from_content($email['body']);
+     if($title == "") { $title = $regex_result[3][0]; }
+
       $this->message_model->store_message(
         $action,                                //action
         $user,                                  //user
         $regex_result[4][0],                    //format
-        $regex_result[3][0],                    //title
+        $title,                                 //title
         $email['overview'][0]->subject,         //subject
         json_encode($email),                    //full email content
         strtotime($email['overview'][0]->date), //action date
@@ -193,11 +199,14 @@ class Publisher_scraper extends CI_Controller {
       $user = identify_user_from_content($email['body']);
       if($user == "") { $user = $regex_result[4][0]; }
 
+      $title = identify_title_from_content($email['body']);
+      if($title == "") { $title = $regex_result[3][0]; }
+
       $this->message_model->store_message(
         $action,                                //action
         $user,                                  //user
         $regex_result[2][0],                    //format
-        $regex_result[3][0],                    //title
+        $title,                                 //title
         $email['overview'][0]->subject,         //subject
         json_encode($email),                    //full email content
         strtotime($email['overview'][0]->date), //action date
