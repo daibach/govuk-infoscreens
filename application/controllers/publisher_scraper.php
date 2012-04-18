@@ -2,15 +2,18 @@
 
 class Publisher_scraper extends CI_Controller {
 
+  public function __construct() {
+    parent::__construct();
+    $this->load->model(array('action_model','message_model'));
+    $this->load->helper('date_helper','publisher_data_helper');
+  }
+
   public function index()
   {
     show_404();
   }
 
   function scrape() {
-
-    $this->load->model(array('action_model','message_model'));
-    $this->load->helper('date_helper','publisher_data_helper');
 
     $emails = $this->_load_emails(GOVUK_IMAP_HOSTNAME.'INBOX',GOVUK_IMAP_USERNAME,GOVUK_IMAP_PASSWORD);
     $this->_process_emails($emails);
