@@ -29,7 +29,11 @@ class Message_model extends CI_Model {
     $this->db->order_by('action_date','desc');
     if($limit > 0) { $this->db->limit($limit); }
     if($action_id > 0) { $this->db->where('actions.id',$action_id); }
-    if($format=='business') { $this->db->where('business_content',1); }
+    if($format=='business') {
+      $this->db->where('business_content',1);
+    } else {
+      $this->db->where('business_content',0);
+    }
     $query = $this->db->get('messages');
 
     if($query->num_rows() > 0) {
@@ -45,7 +49,11 @@ class Message_model extends CI_Model {
     $this->db->select('action_name,count(*) as count');
     $this->db->join('actions','actions.id=messages.action');
     $this->db->where('action_date LIKE',date('Y-m-d',$date).'%');
-    if($format=='business') { $this->db->where('business_content',1); }
+    if($format=='business') {
+      $this->db->where('business_content',1);
+    } else {
+      $this->db->where('business_content',0);
+    }
     $this->db->group_by('action_name');
 
     $query = $this->db->get('messages');
@@ -63,7 +71,11 @@ class Message_model extends CI_Model {
     $this->db->select('action_name,count(*) as count');
     $this->db->join('actions','actions.id=messages.action');
     $this->db->where('WEEK(action_date)','WEEK("'.date('Y-m-d',$date).'")',false);
-    if($format=='business') { $this->db->where('business_content',1); }
+    if($format=='business') {
+      $this->db->where('business_content',1);
+    } else {
+      $this->db->where('business_content',0);
+    }
     $this->db->group_by('action_name');
 
     $query = $this->db->get('messages');
