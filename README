@@ -1,9 +1,18 @@
-Publishing information screen for the GOV.UK (https://www.gov.uk) publishing system.
+⚠️ This application is no longer maintained or supported. ⚠️
+Last update: October 2012
 
-Uses CodeIgniter, PHP and email.
+# GOV.UK Info Screens
 
-I'll update this readme file with more detailed information shortly.
+This is a dashboard for showing how content was being published on the GOV.UK
+website (https://www.gov.uk).
 
-Further details:
-http://dafyddvaughan.co.uk/projects/govuk-infoscreens
-http://digital.cabinetoffice.gov.uk/2012/02/08/radiating-information/
+It worked by reading notifications from a Gmail inbox, processing them, and
+storing in a database.
+
+The application uses PHP, MySQL, Gmail and the CodeIgniter Framework
+(version 2.1.0)
+
+## Further details:
+
+- https://dafyddvaughan.co.uk/projects/govuk-infoscreens
+- http://digital.cabinetoffice.gov.uk/2012/02/08/radiating-information/
